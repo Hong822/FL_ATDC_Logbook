@@ -9,9 +9,10 @@ import '../model/form.dart';
 class FormController {
   // Google App Script Web URL.
   static const String URL =
-      "https://script.google.com/macros/s/AKfycbx-BF2PBC4GM9l6_FrywRBXEi-0oali6a-FYprkzkPF_Y-4lbY/exec";
+      "https://script.google.com/macros/s/AKfycbxGdY-prHSakdtdNKsKqJkHUuIXYR1pivjGaUjg2RXOaHdK8AA/exec";
 
-  //static const String URLORG = "https://script.google.com/macros/s/AKfycbyAaNh-1JK5pSrUnJ34Scp3889mTMuFI86DkDp42EkWiSOOycE/exec";
+  //static const String ChanhongPrivateURL = "https://script.google.com/macros/s/AKfycbx-BF2PBC4GM9l6_FrywRBXEi-0oali6a-FYprkzkPF_Y-4lbY/exec";
+  //static const String ExampleURL = "https://script.google.com/macros/s/AKfycbyAaNh-1JK5pSrUnJ34Scp3889mTMuFI86DkDp42EkWiSOOycE/exec";
 
   // Success Status Message
   static const STATUS_SUCCESS = "SUCCESS";
@@ -55,9 +56,6 @@ class FormController {
       var jsonFeedback = convert.jsonDecode(response.body) as List;
       var temp2 = jsonFeedback.map((json) => DriveRecordForm.fromJson(json));
       var temp3 = temp2.toList();
-      temp2= jsonFeedback.map((json) => DriveRecordForm.fromJson(json));
-      var test = 1;
-      test = 12;
       return temp3;
     } else {
       throw Exception('Failed to load post');

@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(
         title: 'ATDC Logbook',
       ),
-      debugShowCheckedModeBanner: false,
+      //debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -42,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int test =1;
   // TextField Controllers
   String _DepartureDate = " - - ";
   String _DepartureTime = "--:--";
@@ -64,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     FormController().getData_Easy().then((Records) {
-      setState(() {  
+      setState(() {
         List<DriveRecordForm> CarList =
             SpreadSheetUtil().FilterData(Records, "CarList");
 
@@ -432,7 +431,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text("Version 1.0"),
+                    ),
                   ],
                 ),
               ),
@@ -441,6 +447,44 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  String _GetSubmitText() {
+    String RemainFuel =
+        _bkmCheckBox ? _FuelController.text + "km" : _FuelController.text + "%";
+    String DepartureMileage = _DepartureMileageController.text + "km";
+    String ArrivalMileage = _ArrivalMileageController.text + "km";
+
+    String Result = "Car: " +
+        _SelectedCar +
+        "\n" +
+        "Time:" +
+        _DepartureDate +
+        " " +
+        _DepartureTime +
+        " / " +
+        _ArrivalDate +
+        " " +
+        _ArrivalTime +
+        "\n" +
+        "Mileage: " +
+        DepartureMileage +
+        ", " +
+        ArrivalMileage +
+        "\n" +
+        "Purpose: " +
+        _DestinationController.text +
+        "\n" +
+        "Driven By: " +
+        _DrivenByController.text +
+        "\n" +
+        "Parking: " +
+        _ParkingController.text +
+        "\n" +
+        "Fuel: " +
+        RemainFuel;
+
+    return Result;
   }
 
   void _ClearForm() {
@@ -464,7 +508,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _submitForm() {
     // Validate returns true if the form is valid, or false
     // otherwise.
-
     var bValidTimeCheck = true;
     if (_DepartureDate == " - - " ||
         _ArrivalDate == " - - " ||
@@ -472,60 +515,91 @@ class _MyHomePageState extends State<MyHomePage> {
         _ArrivalTime == "--:--") {
       _showSnackbar("Date is missing.");
     } else {
-      var DepartureTime = _DepartureDate + " " + _DepartureTime + ":00";
-      var ArrivalTime = _ArrivalDate + " " + _ArrivalTime + ":00";
-
-      var DepartureDate = DateTime.parse(DepartureTime);
-      var ArrivalDate = DateTime.parse(ArrivalTime);
-      var bTimeCheck =
-          (ArrivalDate.compareTo(DepartureDate) >= 0) ? true : false;
-
-      print("Date: ${DepartureDate} , ${ArrivalDate}");
-      print("Result: ${bTimeCheck}");
-
-      if (bTimeCheck == false) {
-        _showSnackbar("Arrival Time is earlier than Departure.");
+      if (_formKey.currentState.validate() == false) {
+        _showSnackbar("Insufficient Input.");
       } else {
-        if (_formKey.currentState.validate() == false) {
-          _showSnackbar("Insufficient Input.");
+        if (int.parse(_ArrivalMileageController.text) <
+            int.parse(_DepartureMileageController.text)) {
+          _showSnackbar("Arrival Mileage is smaller than departure.");
         } else {
-          // If the form is valid, proceed.
-          String _sFuelCheckbox = _bFuelCheckBox ? "O" : "";
-          String RemainFuel = _bkmCheckBox
-              ? _FuelController.text + "km"
-              : _FuelController.text + "%";
+          var DepartureTime = _DepartureDate + " " + _DepartureTime + ":00";
+          var ArrivalTime = _ArrivalDate + " " + _ArrivalTime + ":00";
+          var DepartureDate = DateTime.parse(DepartureTime);
+          var ArrivalDate = DateTime.parse(ArrivalTime);
+          if (ArrivalDate.compareTo(DepartureDate) < 0) {
+            _showSnackbar("Arrival Time is earlier than Departure.");
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Submit Record"),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text("Do you want to submit this record?\n"),
+                        Text(_GetSubmitText()),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text("Cancel"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    FlatButton(
+                      child: Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
 
-          DriveRecordForm driveRecordForm = DriveRecordForm(
-            "Record",
-            _SelectedCar,
-            _DepartureDate,
-            _DepartureTime,
-            _DepartureMileageController.text,
-            _ArrivalDate,
-            _ArrivalTime,
-            _ArrivalMileageController.text,
-            _DestinationController.text,
-            _DrivenByController.text,
-            _ParkingController.text,
-            RemainFuel,
-            _sFuelCheckbox,
-          );
+                        String _sFuelCheckbox = _bFuelCheckBox ? "O" : "";
+                        String RemainFuel = _bkmCheckBox
+                            ? _FuelController.text + "km"
+                            : _FuelController.text + "%";
 
-          FormController formController = FormController();
+                        DriveRecordForm driveRecordForm = DriveRecordForm(
+                          "Record",
+                          _SelectedCar,
+                          _DepartureDate,
+                          _DepartureTime,
+                          _DepartureMileageController.text,
+                          _ArrivalDate,
+                          _ArrivalTime,
+                          _ArrivalMileageController.text,
+                          _DestinationController.text,
+                          _DrivenByController.text,
+                          _ParkingController.text,
+                          RemainFuel,
+                          _sFuelCheckbox,
+                        );
 
-          _showSnackbar("Submitting Drive Record");
+                        FormController formController = FormController();
 
-          // Submit 'feedbackForm' and save it in Google Sheets.
-          formController.submitForm(driveRecordForm, (String response) {
-            print("Response: $response");
-            if (response == FormController.STATUS_SUCCESS) {
-              // Feedback is saved succesfully in Google Sheets.
-              var showSnackbar = _showSnackbar("Drive Record Submitted");
-            } else {
-              // Error Occurred while saving data in Google Sheets.
-              _showSnackbar("Error Occurred!");
-            }
-          });
+                        _showSnackbar("Submitting Drive Record");
+
+                        // Submit 'feedbackForm' and save it in Google Sheets.
+                        formController.submitForm(driveRecordForm,
+                            (String response) {
+                          print("Response: $response");
+                          if (response == FormController.STATUS_SUCCESS) {
+                            // Feedback is saved succesfully in Google Sheets.
+                            var showSnackbar =
+                                _showSnackbar("Drive Record Submitted");
+                          } else {
+                            // Error Occurred while saving data in Google Sheets.
+                            _showSnackbar("Error Occurred!");
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         }
       }
     }

@@ -12,6 +12,11 @@ class RecordViewScreen extends StatelessWidget {
   String _GetRecordString(var index) {
     String Refuel = (RecordData[index].ReFuel != "") ? " (Refuel:O)" : "";
 
+    RecordData[index].DepartureTime =
+        RecordData[index].DepartureTime.padLeft(5, '0');
+    RecordData[index].ArrivalTime =
+        RecordData[index].ArrivalTime.padLeft(5, '0');
+
     var DepartureTime = RecordData[index].DepartureDate +
         " " +
         RecordData[index].DepartureTime +
@@ -59,86 +64,49 @@ class RecordViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Drive Record of ${AppName}"),
-      ),
-      body: ListView.builder(
-        itemCount: RecordData.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Row(
-              children: <Widget>[
-                Icon(Icons.arrow_forward_ios_rounded),
-                Expanded(
-                  child: Text(
-                    _GetRecordString(index),
-                  ),
-                )
-              ],
-            ),
-            subtitle: Row(
-              children: <Widget>[
-                Icon(Icons.account_box),
-                Expanded(
-                  child: Text(RecordData[index].DrivenBy +
-                      ", " +
-                      RecordData[index].Destination),
-                )
-              ],
-            ),
-          );
-        },
-      ),
-    );
+    if (RecordData.length == 0) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Drive Record of ${AppName}"),
+        ),
+        body: Center(
+          child: Text("No Drive Record.",
+            style:TextStyle(fontWeight: FontWeight.bold),),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Drive Record of ${AppName}"),
+        ),
+        body: ListView.builder(
+          itemCount: RecordData.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Row(
+                children: <Widget>[
+                  Icon(Icons.arrow_forward_ios_rounded),
+                  Expanded(
+                    child: Text(
+                      _GetRecordString(index),
+                    ),
+                  )
+                ],
+              ),
+              subtitle: Row(
+                children: <Widget>[
+                  Icon(Icons.account_box),
+                  Expanded(
+                    child: Text(RecordData[index].DrivenBy +
+                        ", " +
+                        RecordData[index].Destination),
+                  )
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    }
   }
 }
-//
-// class RecordViewPage extends StatefulWidget {
-//   RecordViewPage({Key key, this.title}) : super(key: key);
-//
-//   final String title;
-//
-//   @override
-//   _RecordViewPageState createState() => _RecordViewPageState();
-// }
-//
-// class _RecordViewPageState extends State<RecordViewPage> {
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(widget.title),
-//       ),
-//       body: ListView.builder(
-//         itemCount: RecordData.length,
-//         itemBuilder: (context, index) {
-//           return ListTile(
-//             title: Row(
-//               children: <Widget>[
-//                 Icon(Icons.arrow_forward_ios_rounded),
-//                 Expanded(
-//                   child: Text(
-//                       "${RecordData[index].DepartureDate} ${RecordData[index].DepartureTime} / ${RecordData[index].ArrivalDate} ${RecordData[index].ArrivalTime} / (${RecordData[index].DepartureMileage}, ${RecordData[index].ArrivalMileage}"),
-//                 )
-//               ],
-//             ),
-//             subtitle: Row(
-//               children: <Widget>[
-//                 Icon(Icons.message),
-//                 Expanded(
-//                   child: Text(RecordData[index].DepartureMileage),
-//                 )
-//               ],
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
