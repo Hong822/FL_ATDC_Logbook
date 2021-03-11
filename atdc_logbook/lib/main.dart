@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
