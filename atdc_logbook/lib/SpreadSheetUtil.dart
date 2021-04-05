@@ -35,7 +35,7 @@ class SpreadSheetUtil {
       var ParseDate = DateTime.parse(element.DepartureDate);
       int nGap = nNow.difference(ParseDate).inDays;
       print ("Date Gap: ${nGap}");
-      if (nGap.abs() < 7) {
+      if (nGap.abs() < nDay) {
         lResult.add(element);
       }
       else{

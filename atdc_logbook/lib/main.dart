@@ -173,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: 5,
                         ),
                         RaisedButton(
-                          child: Text("Show\nLast\n7 days"),
+                          child: Text("Show\nLast\n14 days"),
                           color: Colors.white70,
                           textTheme: ButtonTextTheme.normal,
                           onPressed: () async {
@@ -185,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     .FilterData(Data, "Record", _SelectedCar);
                             List<DriveRecordForm> Only7DaysData =
                                 SpreadSheetUtil()
-                                    .FilterData_Day(OnlyRecordData, 7);
+                                    .FilterData_Day(OnlyRecordData, 14);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -437,7 +437,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: Text("Version 1.0"),
+                      child: Text("Version 1.1"),
                     ),
                   ],
                 ),
