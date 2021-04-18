@@ -1,6 +1,7 @@
 /// FeedbackForm is a data class which stores data fields of Feedback.
 class DriveRecordForm {
   String DataType = "";
+  String Password = "";
   String Car = "";
   String DepartureDate = "";
   String DepartureTime = "";
@@ -16,6 +17,7 @@ class DriveRecordForm {
 
   DriveRecordForm(
       this.DataType,
+      this.Password,
       this.Car,
       this.DepartureDate,
       this.DepartureTime,
@@ -32,6 +34,7 @@ class DriveRecordForm {
   factory DriveRecordForm.fromJson(dynamic json) {
     return DriveRecordForm(
         "${json['DataType']}",
+        "${json['Password']}",
         "${json['Car']}",
         "${json['DepartureDate']}",
         "${json['DepartureTime']}",

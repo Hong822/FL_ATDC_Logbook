@@ -8,8 +8,10 @@ import '../model/form.dart';
 /// HTTP GET request on Google App Script Web URL and parses response and sends result callback.
 class FormController {
   // Google App Script Web URL.
+  // static const String URL =
+  //     "https://script.google.com/macros/s/AKfycbxGdY-prHSakdtdNKsKqJkHUuIXYR1pivjGaUjg2RXOaHdK8AA/exec";
   static const String URL =
-      "https://script.google.com/macros/s/AKfycbxGdY-prHSakdtdNKsKqJkHUuIXYR1pivjGaUjg2RXOaHdK8AA/exec";
+       "https://script.google.com/macros/s/AKfycbx0zDQEbKSmcYlB3wDy4tr6-P_2FyZk30rgNDUI-CjcR0uKk6f_LhK7SiPfA5IM6SHe/exec";
 
   //static const String ChanhongPrivateURL = "https://script.google.com/macros/s/AKfycbx-BF2PBC4GM9l6_FrywRBXEi-0oali6a-FYprkzkPF_Y-4lbY/exec";
   //static const String ExampleURL = "https://script.google.com/macros/s/AKfycbyAaNh-1JK5pSrUnJ34Scp3889mTMuFI86DkDp42EkWiSOOycE/exec";

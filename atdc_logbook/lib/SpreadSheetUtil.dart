@@ -1,7 +1,20 @@
 import 'package:atdc_logbook/model/form.dart';
 
 class SpreadSheetUtil {
-  List<DriveRecordForm> FilterData(List<DriveRecordForm> Data, String DataType,
+  String GetPasswordData(List<DriveRecordForm> Data, String DataType) {
+    String sResult;
+
+    for (DriveRecordForm element in Data) {
+      if (element.DataType == DataType) {
+        sResult = element.Password;
+        break;
+      }
+    }
+
+    return sResult;
+  }
+
+  List<DriveRecordForm> FilterCarData(List<DriveRecordForm> Data, String DataType,
       [String Car = ""]) {
     List<DriveRecordForm> lResult = new List<DriveRecordForm>();
 
@@ -15,15 +28,6 @@ class SpreadSheetUtil {
           }
         }
       }
-    }
-
-    print(lResult.length);
-    for (DriveRecordForm element in lResult) {
-      print(element.Car +
-          "/" +
-          element.DepartureMileage +
-          "/" +
-          element.DrivenBy);
     }
     return lResult;
   }
